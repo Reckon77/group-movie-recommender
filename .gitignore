@@ -1,4 +1,5 @@
 RPapers/
+app/
 clean_genre.csv
 imdb_sen.csv
 kaggle_movie_train.csv
