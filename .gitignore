@@ -1,0 +1,11 @@
+RPapers/
+clean_genre.csv
+imdb_sen.csv
+kaggle_movie_train.csv
+movielens.csv
+svd_model.pkl
+vectorizer_genre.pkl
+vectorizer1.pkl
+model_genre.pkl
+model1.pkl
+modelc.pkl
