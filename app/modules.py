@@ -41,10 +41,10 @@ tmdb = TMDb()
 tmdb.api_key = 'f03abce17e11e695cce8ce75b3d4348d'
 movie = Movie()
 def get_movie_genre(title):
-    title = title.split('(')[0].strip()
-    results = movie.search(title)
-    img='https://image.tmdb.org/t/p/w500'+results[0].backdrop_path
     try:
+        title = title.split('(')[0].strip()
+        results = movie.search(title)
+        img='https://image.tmdb.org/t/p/w500'+results[0].backdrop_path
         return img,results[0].overview,get_genre(results[0].overview)
     except:
         return '','NA','other'
@@ -125,19 +125,18 @@ def get_recommendations(data, user_id, top_n, algo):
    
     # creating an empty list to store the recommended product ids
     recommendations = []
-    print(user_id)
     # creating an user item interactions matrix 
     user_movie_interactions_matrix = data.pivot(index='user_id', columns='title', values='rating')
     # extracting those product names which the user_id has not interacted yet
     #non_interacted_movies = user_movie_interactions_matrix.loc[user_id][user_movie_interactions_matrix.loc[user_id].isnull()].index.tolist()
-    rated_movies = set(data[data['user_id'] == user_id]['title'])
+    rated_movies = set(data[data['user_id'] == int(user_id)]['title'])
     all_movies = set(data['title'])
     unrated_movies = list(all_movies - rated_movies)
     # looping through each of the product names which user_id has not interacted yet
     for item_name in unrated_movies:
         
         # predicting the ratings for those non interacted product ids by this user
-        est = algo.predict(user_id, item_name).est
+        est = algo.predict(int(user_id), item_name).est
         
         # appending the predicted ratings
         #movie_name = movies[movies['movie_id']==str(item_id)]['title'].values[0]
@@ -193,4 +192,23 @@ def grouprecommendations(uid1,uid2,uid3):
     # Get the top recommended movies for the combined group of three users
     top_recommendations = [movie[0] for movie in top_movies[:10]]
     return top_recommendations
+
+
+#Get image from title
+from tmdbv3api import TMDb
+from tmdbv3api import Movie
+import numpy as np
+
+# Replace 'YOUR_API_KEY' with your actual TMDb API key
+tmdb = TMDb()
+tmdb.api_key = 'f03abce17e11e695cce8ce75b3d4348d'
+movie = Movie()
+def get_image(title):
+    try:
+        title = title.split('(')[0].strip()
+        results = movie.search(title)
+        img='https://image.tmdb.org/t/p/w500'+results[0].backdrop_path
+        return img
+    except:
+        return ""
     

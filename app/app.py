@@ -9,8 +9,11 @@ loaded_model = dump.load('models/svd_model.pkl')
 # Access the loaded model
 svd_model = loaded_model[1]
 
-df=pd.read_csv('datasets/movielens.csv')
-users = df['user_id'].unique()
+movielens=pd.read_csv('datasets/movielens.csv')
+top30=pd.read_csv('datasets/top.csv')
+top30 = top30.values.tolist()
+print(top30[0])
+users = movielens['user_id'].unique()
 
 #flask config
 app = Flask(__name__)
@@ -18,7 +21,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def index():
     # Handle GET request
-    return render_template('index.html')
+    return render_template('index.html',top=top30)
 @app.route('/genre', methods=['GET','POST'])
 def genre():
     # Handle GET request
@@ -42,8 +45,12 @@ def sentiment():
 def precommender():
     if request.method=='POST':
         user=request.form["user"]
-        precommendations=get_recommendations(data=df,user_id=user,top_n=5,algo=svd_model)
-        return render_template('precommenderResults.html',user_id=user,topFive=precommendations)
+        precommendations=get_recommendations(data=movielens,user_id=user,top_n=10,algo=svd_model)
+        posters=[]
+        for m in precommendations:
+            im=get_image(m[0])
+            posters.append(im)
+        return render_template('precommenderResults.html',posters=posters,user_id=user,topFive=precommendations)
     return render_template('precommender.html',users=users)
 
 @app.route('/grecommender',methods=['GET','POST'])
@@ -53,7 +60,11 @@ def grecommender():
         user2=request.form["user2"]
         user3=request.form["user3"]
         grecommendations=grouprecommendations(user1,user2,user3)
-        return render_template('grecommenderResults.html',user1=user1,user2=user2,user3=user3,topTen=grecommendations)
+        postersg=[]
+        for m in grecommendations:
+            im=get_image(m)
+            postersg.append(im)
+        return render_template('grecommenderResults.html',posters=postersg,user1=user1,user2=user2,user3=user3,topTen=grecommendations)
     return render_template('grecommender.html',users=users)
 if __name__ == "__main__":
     app.run()
