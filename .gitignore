@@ -1,5 +1,6 @@
 RPapers/
-app/
+app/datasets/
+app/models/
 clean_genre.csv
 imdb_sen.csv
 kaggle_movie_train.csv

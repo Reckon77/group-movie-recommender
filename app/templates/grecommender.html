@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">  
+    </script>  
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">  
+    </script>  
+    
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+        rel="stylesheet" type="text/css" />  
+</head>
+<body class="container text-center py-5">
+    <form action="/grecommender" method="post">
+        <input type="text" placeholder="Enter user id 1" name="user1" id="tags1">
+        <input type="text" placeholder="Enter user id 2" name="user2" id="tags2">
+        <input type="text" placeholder="Enter user id 3" name="user3" id="tags3">
+        <button type="submit">Submit</button>
+    </form>
+    <a class="btn btn-primary my-5" href="/" role="button">Home</a>
+    <script>
+  $( function() {
+    var availableTags = [
+        {% for id in users %}
+            "{{id}}",
+        {% endfor %}
+    ];
+    $( "#tags1" ).autocomplete({
+      source: availableTags
+    });
+    $( "#tags2" ).autocomplete({
+      source: availableTags
+    });
+    $( "#tags3" ).autocomplete({
+      source: availableTags
+    });
+  } );
+  </script>
+</body>
+</html>
